@@ -19,13 +19,13 @@ const app = express();
 
 // Configurar CORS
 app.use(cors({
-    origin: ['https://inspiring-cajeta-9f24c2.netlify.app/'],
+    origin: '*', // Permitir todas as origens em produção
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type']
 }));
 
 app.use(express.json());
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // System instruction that defines the chatbot's personality
 const SYSTEM_INSTRUCTION = `Você é um assistente amigável e prestativo chamado GeminiBot. 
@@ -70,11 +70,8 @@ app.post('/chat', async (req, res) => {
 
 // Serve index.html
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
-}); 
+// Export the Express API
+export default app; 
